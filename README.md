@@ -1,19 +1,21 @@
-# Predicting Inventory Demand
+# Predicting Calorie Expenditure
 
 ## Team members
-[Elliot Blackstone](https://github.com/ElliotBlackstone)\
-[Amirhossein Tavakoli](https://github.com/amirhosseintavakoli)
+[Elliot Blackstone](https://github.com/ElliotBlackstone)
 
 # Introduction
-We travel back in time to participate in the Kaggle competition [Grupo Bimbo Inventory Demand](https://www.kaggle.com/competitions/grupo-bimbo-inventory-demand/data), which ended in August 2016.  [Grupo Bimbo](https://www.grupobimbo.com/) is a large Mexican company that sells baked goods all over the world.  The objective of this competition is to predict the demand of various baked goods purchased by various clients on a week to week basis.
+The objective of this project is to predict calorie expenditure during a workout.  This project is an extension of my participation in the Kaggle competition ["Predict Calorie Expenditure"](https://www.kaggle.com/competitions/playground-series-s5e5/overview), which ended on May 31, 2025.
 
 
 # Dataset
-The training dataset is provided by Grupo Bimbo and has roughly 75 million entries.  The target variable is adjusted demand and 10 predictor variables are provided with the dataset.  Noteworthy variables are client ID, product ID, and week number (3 through 9).  The goal is to predict the adjusted demand for nearly 7 million client/product combinations in weeks 10 and 11.  An important caveat about this dataset is that many client/product combinations do not appear in every week (e.g. client X buys product Y in weeks 3, 4, and 8).  New clients and new products can appear in weeks 10 and 11 so models must be able to handle the appearance of new data.
+The training data set contains 750,000 rows with features id, Sex, Age, Weight, Body Temperature, Heart Rate, Duration, and Calories (the target) and the testing set contains 250,000 rows (with features only).  It is worth mentioning that the [dataset](https://www.kaggle.com/competitions/playground-series-s5e5/data) was generated from a deep learning model trained on the [Calories Burnt Prediction](https://www.kaggle.com/datasets/ruchikakumbhar/calories-burnt-prediction) dataset. Feature distributions are close to, but not exactly the same, as the original.
 
 
-# Preprocessing
-We have two preprocessing steps.  First, we create an ID for each client/product combination in the training and test data.  This useful as the ID can be used to easily determine if a client/product combination is in the training set and/or test set.  Our second step is to compute the aggregate statistics of each client and each product.
+
+# Preprocessing and Feature Engineering
+The id column is not necessary and can be deleted.  Age is of integer type and the others are of type float.  We notice in the test set that Height, Weight, Duration, and Heart_Rate only take integer values.  In the training set, Weight, Duration, and Calories only take integer values.  We then notice in the training set that all but one of 750,000 entries in both Height and Heart_Rate takes a non-integer value.  Rounding these two entries to the nearest integer, changing these columns from float to int, and deleting the id column reduces the file size of the training and testing dataset by 33%.
+
+For feature engineering, I added body mass index, Body Temp squared, and interaction terms between all numerical features.
 
 
 # Model Selection and Results
@@ -23,7 +25,7 @@ Models are scored against the true data (not available to public, you must submi
 # Files
 
 ## CSV files:
-Due to the size of the dataset, it can't be uploaded to Github.  See the [Kaggle competition](https://www.kaggle.com/competitions/grupo-bimbo-inventory-demand/data) to download the datasets.
+See the [Kaggle competition](https://www.kaggle.com/competitions/grupo-bimbo-inventory-demand/data) to download the datasets.
 
 ## Notebooks:
 [2_town_state.ipynb](https://github.com/ElliotBlackstone/EWinter25_Product_Inventory/blob/main/2_town_state.ipynb) produces location based heat maps of client sales\
