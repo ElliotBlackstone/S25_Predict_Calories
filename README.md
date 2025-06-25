@@ -31,7 +31,7 @@ Models are scored against the true data (not available to public, you must submi
 | Ensemble* | N/A | N/A | 0.05879 | 678 |
 | AutoGluon | No | No | 0.05846 | 4 |
 
-*: The ensemble model was comprised of the XGBoost, LightGBM, and CatBoost models.\
+*: The ensemble model was comprised of the XGBoost, LightGBM, and CatBoost models.
 
 The AutoGluon model is a stacked ensemble of CatBoost, XGBoost, LightGBM, RandomForest, ExtraTrees, and NN models.  It is the simplest top performing model on the Kaggle leaderboard.
 
