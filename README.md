@@ -1,10 +1,7 @@
 # Predicting Calorie Expenditure
 
-## Team members
-[Elliot Blackstone](https://github.com/ElliotBlackstone)
-
 # Introduction
-The objective of this project is to predict calorie expenditure during a workout.  This project is an extension of my participation in the Kaggle competition ["Predict Calorie Expenditure"](https://www.kaggle.com/competitions/playground-series-s5e5/overview), which ended on May 31, 2025.
+The objective of this project is to predict calorie expenditure during a workout.  This project is an extension of my participation in the Kaggle competition "[Predict Calorie Expenditure](https://www.kaggle.com/competitions/playground-series-s5e5/overview)", which ended on May 31, 2025.
 
 
 # Dataset
@@ -19,20 +16,41 @@ For feature engineering, I added body mass index, Body Temp squared, and interac
 
 
 # Model Selection and Results
-Models are scored against the true data (not available to public, you must submit to Kaggle to get a score) by root mean squared log error.  After making some simple baseline models using aggregate statistics, our best model is a gridsearch cross validated XGBoost model trained with the previous 3 weeks of adjusted demand, client ID, client mean/median/min/max, product ID, and product mean/median.  The score from Kaggle on this model was 0.491.  LightGBM is another gradient boosting method that is more efficient than XGBoost.  Computing power was an issue for the project, so using the same predictors to train a LightGBM model, our score improved to 0.477.  For reference, the best score on the Kaggle leaderboard is 0.442.
+Models are scored against the true data (not available to public, you must submit to Kaggle to get a score) by root mean squared log error (RMSLE).  Optuna was used for optimal feature selection in linear regression and GAM and for hyperparameter selection in XGBoost, LightGBM, and CatBoost models.
 
+| Model | Feature Engineering | Feature Selection | RMSLE | LB (out of 4318) |
+|----------|:--------:|:---------:|:---------:|:---------:|
+| Linear Regression | No | No | 0.45056 | 4103 |
+| Linear Regression | No | Yes | 0.34825 | 4083 |
+| Linear Regression | Yes | Yes | 0.08976 | 3812 |
+| GAM | No | No | 0.08945 | 3811 |
+| GAM | No | No | 0.06949 | 3605 |
+| XGBoost | Yes | No | 0.05922 | 1324 |
+| LightGBM | Yes | No | 0.05921 | 1314 |
+| CatBoost | Yes | No | 0.05906 | 1090 |
+| Ensemble* | N/A | N/A | 0.05879 | 678 |
+| AutoGluon | No | No | 0.05846 | 4 |
+
+*: The ensemble model was comprised of the XGBoost, LightGBM, and CatBoost models.\
+
+The AutoGluon model is a stacked ensemble of CatBoost, XGBoost, LightGBM, RandomForest, ExtraTrees, and NN models.  It is the simplest top performing model on the Kaggle leaderboard.
 
 # Files
 
 ## CSV files:
-See the [Kaggle competition](https://www.kaggle.com/competitions/grupo-bimbo-inventory-demand/data) to download the datasets.
+See the [Kaggle competition](https://www.kaggle.com/competitions/playground-series-s5e5/data) to download the datasets.
 
 ## Notebooks:
-[2_town_state.ipynb](https://github.com/ElliotBlackstone/EWinter25_Product_Inventory/blob/main/2_town_state.ipynb) produces location based heat maps of client sales\
-[simple_models.ipynb](https://github.com/ElliotBlackstone/EWinter25_Product_Inventory/blob/main/simple_models.ipynb) contains 4 different simple models that are based off of aggregate statistics\
-[xgboost_final_EB.ipynb](https://github.com/ElliotBlackstone/EWinter25_Product_Inventory/blob/main/xgboost_final_EB.ipynb) is a well explained notebook of one of our top models\
-[xgboost_final_minmaxgrid_EB.ipynb](https://github.com/ElliotBlackstone/EWinter25_Product_Inventory/blob/main/xgboost_final_minmaxgrid_EB.ipynb) is a slight improvement of the model in the previous file, which produced our top score with XGBoost\
-[lgb-prediction.ipynb](https://github.com/ElliotBlackstone/EWinter25_Product_Inventory/blob/main/lgb-prediction.ipynb) uses the same predictors as our best XGBoost model but scores better
+[calorie_compress.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_compress.ipynb) reduce dataset file size by 33%\
+[calorie_EDA.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_EDA.ipynb) exploratory data analysis\
+[calorie_LinReg.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_LinReg.ipynb) linear regression models with Optuna for feature selection\
+[calorie_gam.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_gam.ipynb) GAMs with Optuna for feature selection\
+[calorie_autogluon.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_autogluon.ipynb) top performing AutoGluon model with SHAP for explainability\
+[calorie_catboost.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_catboost.ipynb) CatBoost model with SHAP for explainability\
+[calorie_xgboost.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_xgboost.ipynb) XGBoost model with SHAP for explainability\
+[calorie_lightGBM.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_lightGBM.ipynb) LightGBM model with SHAP for explainability\
+[calorie_ensemble.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_ensemble.ipynb) Ensemble model of XGBoost, LightGBM, CatBoost
 
-## Folder:
-The folder 'etc' contained many files with poor notation that were used to build our understanding of the dataset and various models.
+## Folders:
+[catboost_info](https://github.com/ElliotBlackstone/S25_Predict_Calories/tree/main/catboost_info) contains files automatically generated while training CatBoost models\
+[Optuna databases]() contains databases from Optuna studies
