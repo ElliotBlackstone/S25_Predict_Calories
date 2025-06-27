@@ -1,3 +1,5 @@
 *.csv
 AutogluonModels/
 *.mp4
+*.docx
+*.pptx
