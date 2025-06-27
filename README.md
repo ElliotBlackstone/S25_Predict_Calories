@@ -10,26 +10,31 @@ The training data set contains 750,000 rows with features id, Sex, Age, Weight, 
 
 
 # Preprocessing and Feature Engineering
-The id column is not necessary and can be deleted.  Age is of integer type and the others are of type float.  We notice in the test set that Height, Weight, Duration, and Heart_Rate only take integer values.  In the training set, Weight, Duration, and Calories only take integer values.  We then notice in the training set that all but one of 750,000 entries in both Height and Heart_Rate takes a non-integer value.  Rounding these two entries to the nearest integer, changing these columns from float to int, and deleting the id column reduces the file size of the training and testing dataset by 33%.
+Our preprocessing is comprised of the following steps:
+-	Log transform Calories
+-	One-hot encoding for gender and recast as categorical type
+-	Delete id column
+-	Change height, weight, duration, heart rate from float to int
+
+Notably, in the last step, only 1 value of heart rate and height was non-integer, so these were rounded to the nearest integer.  These preprocessing steps reduced file size by roughly 10.5%.
 
 For feature engineering, I added body mass index, Body Temp squared, and interaction terms between all numerical features.
 
 
 # Model Selection and Results
-Models are scored against the true data (not available to public, you must submit to Kaggle to get a score) by root mean squared log error (RMSLE).  Optuna was used for optimal feature selection in linear regression and GAM and for hyperparameter selection in XGBoost, LightGBM, and CatBoost models.
+Models are scored against the true data (not available to public, you must submit to Kaggle to get a score) by root mean squared log error (RMSLE).  Optuna was used for hyperparameter selection in XGBoost, LightGBM, and CatBoost models.
 
-| Model | Feature Engineering | Feature Selection | RMSLE | LB (out of 4318) |
-|----------|:--------:|:---------:|:---------:|:---------:|
-| Linear Regression | No | No | 0.45056 | 4103 |
-| Linear Regression | No | Yes | 0.34825 | 4083 |
-| Linear Regression | Yes | Yes | 0.08976 | 3812 |
-| GAM | No | No | 0.08945 | 3811 |
-| GAM | No | No | 0.06949 | 3605 |
-| XGBoost | Yes | No | 0.05922 | 1324 |
-| LightGBM | Yes | No | 0.05921 | 1314 |
-| CatBoost | Yes | No | 0.05906 | 1090 |
-| Ensemble* | N/A | N/A | 0.05879 | 678 |
-| AutoGluon | No | No | 0.05846 | 4 |
+| Model | Feature Engineering | RMSLE | LB (out of 4318) |
+|----------|:--------:|:---------:|:---------:|
+| Linear Regression | No | 0.17926 | 4025 |
+| Linear Regression | Yes | 0.09431 | 3826 |
+| GAM | No | 0.08945 | 3811 |
+| GAM | Yes | 0.06949 | 3605 |
+| XGBoost | Yes | 0.05922 | 1324 |
+| LightGBM | Yes | 0.05921 | 1314 |
+| CatBoost | Yes | 0.05903 | 1050 |
+| Ensemble* | N/A | 0.05879 | 678 |
+| AutoGluon | No | 0.05846 | 4 |
 
 *: The ensemble model was comprised of the XGBoost, LightGBM, and CatBoost models.
 
@@ -37,11 +42,14 @@ The AutoGluon model is a stacked ensemble of CatBoost, XGBoost, LightGBM, Random
 
 # Files
 
+## Package requirements:
+[requirements.txt](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/requirements.txt)
+
 ## CSV files:
 See the [Kaggle competition](https://www.kaggle.com/competitions/playground-series-s5e5/data) to download the datasets.
 
 ## Notebooks:
-[calorie_compress.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_compress.ipynb) reduce dataset file size by 33%\
+[calorie_preprocess.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_preprocess.ipynb) preprocessing and reduce dataset file size by 10.5%\
 [calorie_EDA.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_EDA.ipynb) exploratory data analysis\
 [calorie_LinReg.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_LinReg.ipynb) linear regression models with Optuna for feature selection\
 [calorie_gam.ipynb](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/calorie_gam.ipynb) GAMs with Optuna for feature selection\
@@ -53,4 +61,8 @@ See the [Kaggle competition](https://www.kaggle.com/competitions/playground-seri
 
 ## Folders:
 [catboost_info](https://github.com/ElliotBlackstone/S25_Predict_Calories/tree/main/catboost_info) contains files automatically generated while training CatBoost models\
-[Optuna databases]() contains databases from Optuna studies
+[Optuna_databases](https://github.com/ElliotBlackstone/S25_Predict_Calories/tree/main/Optuna_databases) contains databases from Optuna studies
+
+## Erdos Files:
+[Exec_Summary_calorie.pdf](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/Exec_Summary_calorie.pdf) Executive summary
+[PredCalExp_slides.pdf](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/PredCalExp_slides.pdf) Powerpoint slides
