@@ -63,6 +63,6 @@ See the [Kaggle competition](https://www.kaggle.com/competitions/playground-seri
 [catboost_info](https://github.com/ElliotBlackstone/S25_Predict_Calories/tree/main/catboost_info) contains files automatically generated while training CatBoost models\
 [Optuna_databases](https://github.com/ElliotBlackstone/S25_Predict_Calories/tree/main/Optuna_databases) contains databases from Optuna studies
 
-## Erdos Files:
-[Exec_Summary_calorie.pdf](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/Exec_Summary_calorie.pdf) Executive summary
+## Erdős Files:
+[Exec_Summary_calorie.pdf](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/Exec_Summary_calorie.pdf) Executive summary\
 [PredCalExp_slides.pdf](https://github.com/ElliotBlackstone/S25_Predict_Calories/blob/main/PredCalExp_slides.pdf) Powerpoint slides
